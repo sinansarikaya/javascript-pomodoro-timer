@@ -172,13 +172,7 @@ function createUI(): void {
       <!-- Timer Info -->
       <div class="info">
         <span id="timer-info-text" data-i18n="youAreInPomodoroTime">Pomodoro zamanındasınız</span>
-        <lord-icon
-          src="https://cdn.lordicon.com/qtqvorle.json"
-          trigger="loop"
-          colors="outline:#ffffff,primary:#646e78,secondary:#1e8194,tertiary:#9ce5f4"
-          style="width: 50px; height: 50px"
-        >
-        </lord-icon>
+        <i id="timer-mode-icon" class="fa-solid fa-clock"></i>
       </div>
 
       <!-- Action Button -->
@@ -854,14 +848,24 @@ function updateModeButtons(activeMode: string): void {
 
 function updateTimerInfo(mode: string): void {
   const infoText = document.getElementById('timer-info-text');
-  if (!infoText) return;
+  const modeIcon = document.getElementById('timer-mode-icon');
+  
+  if (!infoText || !modeIcon) return;
   
   const modeTexts = {
     pomodoro: I18n.t('youAreInPomodoroTime'),
     short: I18n.t('youAreInShortBreak'),
     long: I18n.t('youAreInLongBreak')
   };
+  
+  const modeIcons = {
+    pomodoro: 'fa-solid fa-clock',
+    short: 'fa-solid fa-coffee',
+    long: 'fa-solid fa-bed'
+  };
+  
   infoText.textContent = modeTexts[mode as keyof typeof modeTexts];
+  modeIcon.className = modeIcons[mode as keyof typeof modeIcons];
 }
 
 // Panel management

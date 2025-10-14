@@ -2,27 +2,34 @@
   "name": "Pomodoro Timer",
   "short_name": "Pomodoro",
   "description": "Modern ve kullanıcı dostu Pomodoro Timer uygulaması",
-  "start_url": "/",
+  "start_url": "/javascript-pomodoro-timer/",
   "display": "standalone",
   "background_color": "#2c394b",
   "theme_color": "#f05454",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
+      "src": "/javascript-pomodoro-timer/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/favicon.svg",
+      "src": "/javascript-pomodoro-timer/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/javascript-pomodoro-timer/icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "categories": ["productivity", "utilities"],
   "lang": "tr",
   "dir": "ltr",
-  "scope": "/",
+  "scope": "/javascript-pomodoro-timer/",
   "prefer_related_applications": false
 }
