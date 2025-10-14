@@ -1,0 +1,29 @@
+/* ========================================
+   BASE STYLES - Legacy Compatibility
+   Only includes essential base styles
+   Main styling is in modern-styles.css
+   ======================================== */
+
+/* Import Modern Styles */
+@import './modern-styles.css';
+
+/* Legacy Support - Only if needed by theme system */
+:root {
+  /* Pomodoro Mode Colors */
+  --pomodoro-bg: var(--color-primary);
+  --short-break-bg: var(--color-success);
+  --long-break-bg: var(--color-warning);
+
+  /* Circle Colors for Timer */
+  --circle-stroke: var(--color-primary);
+  --circle-bg: var(--color-border-light);
+}
+
+/* App Container */
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Goal Input - Now uses same structure as task input */
