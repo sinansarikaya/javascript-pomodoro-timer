@@ -3,13 +3,37 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://sinansarikaya.github.io/javascript-pomodoro-timer/",
+  "description": "🍅 Modern Pomodoro Timer - A beautiful productivity app built with TypeScript",
+  "keywords": [
+    "pomodoro",
+    "timer",
+    "productivity",
+    "typescript",
+    "task-management",
+    "goal-tracking",
+    "statistics",
+    "time-management",
+    "focus"
+  ],
+  "author": "Sinan Sarıkaya",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinansarikaya/javascript-pomodoro-timer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sinansarikaya/javascript-pomodoro-timer/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "devDependencies": {
     "typescript": "~5.9.3",
-    "vite": "^7.1.7"
+    "vite": "^7.1.7",
+    "gh-pages": "^6.1.1"
   }
 }

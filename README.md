@@ -418,6 +418,24 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## ⭐ Star History
 
+## 📦 Deployment
+
+### GitHub Pages
+```bash
+# Build the project
+npm run build
+
+# Deploy to GitHub Pages
+npm run deploy
+```
+
+### Manual Deployment
+1. Run `npm run build` to create the `dist` folder
+2. Push the `dist` folder contents to the `gh-pages` branch
+3. Enable GitHub Pages in repository settings
+
+---
+
 If you find this project useful, please consider giving it a star! It helps others discover the project and motivates continued development.
 
 <div align="center">
