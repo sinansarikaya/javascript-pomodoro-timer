@@ -8,7 +8,7 @@ export class StatisticsManager {
 
   static init(): void {
     // Try to load from new format first, fallback to old format
-    const statistics = Storage.get('statistics', {});
+    const statistics = Storage.get('statistics', {}) as any;
     if (statistics.sessions && statistics.dailyStats) {
       this.sessions = statistics.sessions;
       this.dailyStats = statistics.dailyStats;
@@ -30,14 +30,12 @@ export class StatisticsManager {
   }
 
   static getTodaySessions(): PomodoroSession[] {
-    const today = new Date();
     return this.sessions.filter(session => 
       DateUtils.isToday(new Date(session.startTime))
     );
   }
 
   static getWeekSessions(): PomodoroSession[] {
-    const today = new Date();
     return this.sessions.filter(session => 
       DateUtils.isThisWeek(new Date(session.startTime))
     );

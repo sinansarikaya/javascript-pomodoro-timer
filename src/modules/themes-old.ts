@@ -10,6 +10,8 @@ export class ThemeManager {
       primary: '#ffffff',
       secondary: '#f8fafc',
       accent: '#6366f1',
+      background: '#ffffff',
+      surface: '#f8fafc',
       text: '#0f172a',
       textSecondary: '#64748b'
     }

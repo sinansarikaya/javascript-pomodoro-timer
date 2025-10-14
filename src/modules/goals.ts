@@ -90,7 +90,6 @@ export class GoalManager {
   }
 
   static getTodayGoal(): Goal | null {
-    const today = new Date();
     return this.goals.find(goal => 
       goal.period === 'daily' && 
       DateUtils.isToday(goal.createdAt) &&
@@ -99,7 +98,6 @@ export class GoalManager {
   }
 
   static getWeekGoal(): Goal | null {
-    const today = new Date();
     return this.goals.find(goal => 
       goal.period === 'weekly' && 
       DateUtils.isThisWeek(goal.createdAt) &&
@@ -121,7 +119,6 @@ export class GoalManager {
   }
 
   static resetDailyGoals(): void {
-    const today = new Date();
     this.goals.forEach(goal => {
       if (goal.period === 'daily' && !DateUtils.isToday(goal.createdAt)) {
         this.updateGoal(goal.id, {
@@ -133,7 +130,6 @@ export class GoalManager {
   }
 
   static resetWeeklyGoals(): void {
-    const today = new Date();
     this.goals.forEach(goal => {
       if (goal.period === 'weekly' && !DateUtils.isThisWeek(goal.createdAt)) {
         this.updateGoal(goal.id, {

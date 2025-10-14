@@ -1704,7 +1704,6 @@ function updateUI(): void {
   const activeTaskText = document.getElementById('active-task-text');
   
   if (activeTask && activeTaskDisplay && activeTaskText) {
-    const progress = activeTask.estimatedPomodoros > 0 ? (activeTask.pomodorosUsed / activeTask.estimatedPomodoros) * 100 : 0;
     activeTaskText.textContent = `${I18n.t('activeTask')}: ${activeTask.title} (${activeTask.pomodorosUsed}/${activeTask.estimatedPomodoros})`;
     activeTaskDisplay.style.display = 'flex';
   } else if (activeTaskDisplay) {

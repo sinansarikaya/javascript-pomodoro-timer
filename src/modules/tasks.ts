@@ -104,7 +104,7 @@ export class TaskManager {
     
     const taskToRestore = archivedTasks[taskIndex];
     // Remove archived properties
-    const { archivedAt, deletedAt, ...restoredTask } = taskToRestore;
+    const { ...restoredTask } = taskToRestore;
     
     // Add back to active tasks
     this.tasks.push(restoredTask);

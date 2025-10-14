@@ -42,7 +42,6 @@ export interface Translations {
   active: string;
   noTasksYet: string;
   noCompletedTasks: string;
-  taskCompleted: string;
   complete: string;
   delete: string;
   undo: string;
@@ -158,6 +157,7 @@ export interface Translations {
   goalCompleted: string;
   taskCompleted: string;
   nextTaskQuestion: string;
+  backupExported: string;
 }
 
 export const translations: Record<string, Translations> = {
@@ -204,7 +204,6 @@ export const translations: Record<string, Translations> = {
     active: 'Aktif',
     noTasksYet: 'Henüz görev yok. Yukarıdan ekleyin!',
     noCompletedTasks: 'Tamamlanan görev yok',
-    taskCompleted: 'Tamamlandı!',
     complete: 'Tamamla',
     delete: 'Sil',
     undo: 'Geri Al',
@@ -319,7 +318,8 @@ export const translations: Record<string, Translations> = {
     reloadPageConfirm: 'Sayfayı yenilemek ister misiniz?',
     goalCompleted: '🎯 Hedef tamamlandı!',
     taskCompleted: '✅ Görev tamamlandı!',
-    nextTaskQuestion: 'Bir sonraki göreve geçmek ister misiniz?'
+    nextTaskQuestion: 'Bir sonraki göreve geçmek ister misiniz?',
+    backupExported: 'Yedek başarıyla indirildi!'
   },
   en: {
     // Common
@@ -364,7 +364,6 @@ export const translations: Record<string, Translations> = {
     active: 'Active',
     noTasksYet: 'No tasks yet. Add one above!',
     noCompletedTasks: 'No completed tasks',
-    taskCompleted: 'Completed!',
     complete: 'Complete',
     delete: 'Delete',
     undo: 'Undo',
@@ -479,7 +478,8 @@ export const translations: Record<string, Translations> = {
     reloadPageConfirm: 'Would you like to reload the page?',
     goalCompleted: '🎯 Goal completed!',
     taskCompleted: '✅ Task completed!',
-    nextTaskQuestion: 'Would you like to move to the next task?'
+    nextTaskQuestion: 'Would you like to move to the next task?',
+    backupExported: 'Backup exported successfully!'
   }
 };
 
