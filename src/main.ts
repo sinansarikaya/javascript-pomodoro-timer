@@ -567,13 +567,41 @@ function setupEventListeners(): void {
 
   document.querySelector('.fa-xmark')?.addEventListener('click', closeInfoModal);
 
-  // Close info modal on ESC key or clicking outside
+  // Keyboard shortcuts
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      const infoBox = document.querySelector('.infoBox');
-      if (infoBox?.classList.contains('active')) {
-        closeInfoModal();
-      }
+    // Don't trigger shortcuts if user is typing in an input
+    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+      return;
+    }
+
+    switch (e.key) {
+      case ' ':
+        e.preventDefault();
+        toggleTimer();
+        break;
+      case 'r':
+      case 'R':
+        e.preventDefault();
+        resetTimer();
+        break;
+      case '1':
+        e.preventDefault();
+        setMode('pomodoro');
+        break;
+      case '2':
+        e.preventDefault();
+        setMode('shortBreak');
+        break;
+      case '3':
+        e.preventDefault();
+        setMode('longBreak');
+        break;
+      case 'Escape':
+        const infoBox = document.querySelector('.infoBox');
+        if (infoBox?.classList.contains('active')) {
+          closeInfoModal();
+        }
+        break;
     }
   });
 
@@ -717,6 +745,28 @@ function toggleTimer(): void {
   } else {
     TimerManager.start();
     updateActionButton(true);
+  }
+}
+
+function resetTimer(): void {
+  TimerManager.reset();
+  updateTimerDisplay();
+  updateActionButton(false);
+  updateModeButtons(TimerManager.getMode());
+}
+
+function setMode(mode: string): void {
+  const modeMap: Record<string, 'pomodoro' | 'short' | 'long'> = {
+    'pomodoro': 'pomodoro',
+    'shortBreak': 'short',
+    'longBreak': 'long'
+  };
+  
+  const timerMode = modeMap[mode];
+  if (timerMode) {
+    TimerManager.setMode(timerMode);
+    updateModeButtons(timerMode);
+    updateTimerDisplay();
   }
 }
 
@@ -1072,6 +1122,9 @@ function updateTasksPanel(): void {
               <button class="task-btn notes" onclick="event.stopPropagation(); openTaskNotes('${task.id}')" title="${I18n.t('notes')}">
                 <i class="fa-solid fa-note-sticky"></i>
               </button>
+              <button class="task-btn edit" onclick="event.stopPropagation(); editTask('${task.id}')" title="${I18n.t('edit')}">
+                <i class="fa-solid fa-edit"></i>
+              </button>
               <button class="task-btn complete" onclick="event.stopPropagation(); completeTask('${task.id}')" title="${I18n.t('complete')}">
                 <i class="fa-solid fa-check"></i>
               </button>
@@ -1112,6 +1165,9 @@ function updateTasksPanel(): void {
               <button class="task-btn notes" onclick="event.stopPropagation(); openTaskNotes('${task.id}')" title="${I18n.t('notes')}">
                 <i class="fa-solid fa-note-sticky"></i>
               </button>
+              <button class="task-btn edit" onclick="event.stopPropagation(); editTask('${task.id}')" title="${I18n.t('edit')}">
+                <i class="fa-solid fa-edit"></i>
+              </button>
               <button class="task-btn undo" onclick="uncompleteTask('${task.id}')" title="${I18n.t('undo')}">
                 <i class="fa-solid fa-rotate-left"></i>
               </button>
@@ -1150,9 +1206,14 @@ function updateGoalsPanel(): void {
         <div class="goal-item ${isActive ? 'active-goal' : ''}" data-goal-id="${goal.id}" onclick="setActiveGoal('${goal.id}', event)">
           <div class="goal-header">
             <h4>${goal.title}</h4>
-            <button class="goal-delete-btn" onclick="event.stopPropagation(); deleteGoal('${goal.id}')" title="${I18n.t('delete')}">
-              <i class="fa-solid fa-trash"></i>
-            </button>
+            <div class="goal-actions">
+              <button class="goal-btn edit" onclick="event.stopPropagation(); editGoal('${goal.id}')" title="${I18n.t('edit')}">
+                <i class="fa-solid fa-edit"></i>
+              </button>
+              <button class="goal-btn delete" onclick="event.stopPropagation(); deleteGoal('${goal.id}')" title="${I18n.t('delete')}">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
           </div>
           <div class="goal-progress-bar">
             <div class="goal-progress-fill" style="width: ${progress}%"></div>
@@ -1178,9 +1239,14 @@ function updateGoalsPanel(): void {
         <div class="goal-item completed" data-goal-id="${goal.id}">
           <div class="goal-header">
             <h4><s>${goal.title}</s></h4>
-            <button class="goal-delete-btn" onclick="event.stopPropagation(); deleteGoal('${goal.id}')" title="${I18n.t('delete')}">
-              <i class="fa-solid fa-trash"></i>
-            </button>
+            <div class="goal-actions">
+              <button class="goal-btn edit" onclick="event.stopPropagation(); editGoal('${goal.id}')" title="${I18n.t('edit')}">
+                <i class="fa-solid fa-edit"></i>
+              </button>
+              <button class="goal-btn delete" onclick="event.stopPropagation(); deleteGoal('${goal.id}')" title="${I18n.t('delete')}">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
           </div>
           <div class="goal-progress-bar">
             <div class="goal-progress-fill" style="width: ${progress}%"></div>
@@ -1619,6 +1685,7 @@ function addGoal(): void {
     TaskManager.setActiveTask(taskId);
   }
   updateTasksPanel();
+  updateUI(); // Update active task display
 };
 
 (window as any).completeTask = function(taskId: string): void {
@@ -1649,6 +1716,59 @@ function addGoal(): void {
   if (confirm(I18n.t('confirmDeleteTask'))) {
     TaskManager.deleteTask(taskId);
     updateTasksPanel();
+  }
+};
+
+(window as any).editTask = function(taskId: string): void {
+  const task = TaskManager.getTask(taskId);
+  if (!task) return;
+
+  const title = prompt(I18n.t('taskTitle'), task.title);
+  if (!title || title.trim() === '') return;
+
+  const pomodorosStr = prompt(I18n.t('estimatedPomodoros'), task.estimatedPomodoros.toString());
+  if (!pomodorosStr) return;
+  
+  const pomodoros = parseInt(pomodorosStr);
+  if (isNaN(pomodoros) || pomodoros < 1 || pomodoros > 20) {
+    Toast.error(I18n.t('pomodoroCountError'));
+    return;
+  }
+
+  const notes = prompt(I18n.t('notes') + ' (Optional)', task.notes || '');
+  if (notes === null) return;
+
+  const success = TaskManager.editTask(taskId, title, pomodoros, notes, task.goalId || undefined);
+  if (success) {
+    updateTasksPanel();
+    updateUI();
+    Toast.success('Task updated successfully!');
+  }
+};
+
+(window as any).editGoal = function(goalId: string): void {
+  const goal = GoalManager.getGoal(goalId);
+  if (!goal) return;
+
+  const title = prompt(I18n.t('goalTitle'), goal.title);
+  if (!title || title.trim() === '') return;
+
+  const targetStr = prompt(I18n.t('targetPomodoros'), goal.target.toString());
+  if (!targetStr) return;
+  
+  const target = parseInt(targetStr);
+  if (isNaN(target) || target < 1 || target > 50) {
+    Toast.error(I18n.t('goalTargetError'));
+    return;
+  }
+
+  const period = confirm('Is this a daily goal? (OK for daily, Cancel for weekly)') ? 'daily' : 'weekly';
+
+  const success = GoalManager.editGoal(goalId, title, target, period);
+  if (success) {
+    updateGoalsPanel();
+    updateUI();
+    Toast.success('Goal updated successfully!');
   }
 };
 

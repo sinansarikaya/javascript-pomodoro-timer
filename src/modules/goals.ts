@@ -53,6 +53,17 @@ export class GoalManager {
     return true;
   }
 
+  static editGoal(id: string, title: string, target: number, period: 'daily' | 'weekly'): boolean {
+    const goal = this.getGoal(id);
+    if (!goal) return false;
+
+    return this.updateGoal(id, {
+      title: title.trim(),
+      target,
+      period
+    });
+  }
+
   static setActiveGoal(id: string | null): void {
     this.activeGoalId = id;
     Storage.set('activeGoalId', id);

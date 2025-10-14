@@ -30,6 +30,7 @@ export interface Task {
   priority?: 'low' | 'medium' | 'high';
   category?: string;
   notes?: string;
+  goalId?: string;
   recurring?: {
     enabled: boolean;
     frequency: 'daily' | 'weekly' | 'monthly';

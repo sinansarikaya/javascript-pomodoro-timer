@@ -54,6 +54,18 @@ export class TaskManager {
     return true;
   }
 
+  static editTask(id: string, title: string, estimatedPomodoros: number, notes?: string, goalId?: string): boolean {
+    const task = this.getTask(id);
+    if (!task) return false;
+
+    return this.updateTask(id, {
+      title: title.trim(),
+      estimatedPomodoros,
+      notes: notes?.trim() || '',
+      goalId: goalId || undefined
+    });
+  }
+
   static completeTask(id: string): boolean {
     const task = this.getTask(id);
     if (!task) return false;

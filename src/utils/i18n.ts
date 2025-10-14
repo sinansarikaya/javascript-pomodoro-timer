@@ -158,6 +158,13 @@ export interface Translations {
   taskCompleted: string;
   nextTaskQuestion: string;
   backupExported: string;
+  edit: string;
+  editTask: string;
+  editGoal: string;
+  save: string;
+  taskTitle: string;
+  goalTitle: string;
+  targetPomodoros: string;
 }
 
 export const translations: Record<string, Translations> = {
@@ -319,7 +326,14 @@ export const translations: Record<string, Translations> = {
     goalCompleted: '🎯 Hedef tamamlandı!',
     taskCompleted: '✅ Görev tamamlandı!',
     nextTaskQuestion: 'Bir sonraki göreve geçmek ister misiniz?',
-    backupExported: 'Yedek başarıyla indirildi!'
+    backupExported: 'Yedek başarıyla indirildi!',
+    edit: 'Düzenle',
+    editTask: 'Görev Düzenle',
+    editGoal: 'Hedef Düzenle',
+    save: 'Kaydet',
+    taskTitle: 'Görev Başlığı',
+    goalTitle: 'Hedef Başlığı',
+    targetPomodoros: 'Hedef Pomodoro Sayısı'
   },
   en: {
     // Common
@@ -479,7 +493,14 @@ export const translations: Record<string, Translations> = {
     goalCompleted: '🎯 Goal completed!',
     taskCompleted: '✅ Task completed!',
     nextTaskQuestion: 'Would you like to move to the next task?',
-    backupExported: 'Backup exported successfully!'
+    backupExported: 'Backup exported successfully!',
+    edit: 'Edit',
+    editTask: 'Edit Task',
+    editGoal: 'Edit Goal',
+    save: 'Save',
+    taskTitle: 'Task Title',
+    goalTitle: 'Goal Title',
+    targetPomodoros: 'Target Pomodoros'
   }
 };
 
