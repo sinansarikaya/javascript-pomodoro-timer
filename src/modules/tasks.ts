@@ -54,7 +54,7 @@ export class TaskManager {
     return true;
   }
 
-  static editTask(id: string, title: string, estimatedPomodoros: number, notes?: string, goalId?: string): boolean {
+  static editTask(id: string, title: string, estimatedPomodoros: number, notes?: string, goalId?: string, category?: string, recurring?: boolean): boolean {
     const task = this.getTask(id);
     if (!task) return false;
 
@@ -62,7 +62,9 @@ export class TaskManager {
       title: title.trim(),
       estimatedPomodoros,
       notes: notes?.trim() || '',
-      goalId: goalId || undefined
+      goalId: goalId || undefined,
+      category: category || 'work',
+      recurring: recurring ? { enabled: true, frequency: 'daily' } : undefined
     });
   }
 

@@ -120,7 +120,97 @@ function createUI(): void {
         
         <div class="help-section">
           <h3 data-i18n="keyboardShortcuts">Klavye Kısayolları</h3>
-          <p data-i18n="shortcutsDesc">• Space: Başlat/Duraklat<br>• R: Sıfırla<br>• 1: Pomodoro modu<br>• 2: Kısa mola<br>• 3: Uzun mola</p>
+          <p data-i18n="shortcutsDesc">
+            <strong>Timer Kontrolü:</strong><br>
+            • Space: Başlat/Duraklat<br>
+            • R: Sıfırla<br>
+            • 1: Pomodoro modu<br>
+            • 2: Kısa mola<br>
+            • 3: Uzun mola<br><br>
+            <strong>Menü Navigasyonu (Aç/Kapat):</strong><br>
+            • T: Görevler menüsü<br>
+            • G: Hedefler menüsü<br>
+            • S: İstatistikler menüsü<br>
+            • A: Ayarlar menüsü<br>
+            • H: Yardım menüsü<br><br>
+            <strong>Genel:</strong><br>
+            • Escape: Modal'ları kapat<br>
+            • Aynı tuşa tekrar basarak menüleri kapatabilirsiniz
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="shadowBg" id="edit-modal">
+      <div class="edit-modal">
+        <div class="edit-modal-header">
+          <h2 id="edit-modal-title">Edit Task</h2>
+          <button class="close-edit-modal">
+            <i class="fa-solid fa-times"></i>
+          </button>
+        </div>
+        <div class="edit-modal-content">
+          <form id="edit-form">
+            <div class="form-group">
+              <label for="edit-title" data-i18n="title">Başlık</label>
+              <input type="text" id="edit-title" required>
+            </div>
+            
+            <div class="form-group" id="edit-pomodoros-group">
+              <label for="edit-pomodoros" data-i18n="estimatedPomodoros">Tahmini Pomodoro</label>
+              <input type="number" id="edit-pomodoros" min="1" max="20" required>
+            </div>
+            
+            <div class="form-group" id="edit-category-group">
+              <label for="edit-category" data-i18n="category">Kategori</label>
+              <select id="edit-category">
+                <option value="work" data-i18n="work">İş</option>
+                <option value="personal" data-i18n="personal">Kişisel</option>
+                <option value="learning" data-i18n="learning">Öğrenme</option>
+                <option value="health" data-i18n="health">Sağlık</option>
+                <option value="other" data-i18n="other">Diğer</option>
+              </select>
+            </div>
+            
+            <div class="form-group" id="edit-recurring-group">
+              <label class="checkbox-label recurring-checkbox">
+                <input type="checkbox" id="edit-recurring">
+                <span class="checkmark"></span>
+                <span class="checkbox-text" data-i18n="recurringTask">Tekrarlayan Görev</span>
+              </label>
+            </div>
+            
+            <div class="form-group" id="edit-goal-group" style="display: none;">
+              <label for="edit-goal" data-i18n="goal">Hedef</label>
+              <select id="edit-goal">
+                <option value="" data-i18n="noGoal">Hedef yok</option>
+              </select>
+            </div>
+            
+            <div class="form-group" id="edit-target-group" style="display: none;">
+              <label for="edit-target" data-i18n="targetPomodoros">Hedef Pomodoro</label>
+              <input type="number" id="edit-target" min="1" max="50">
+            </div>
+            
+            <div class="form-group" id="edit-period-group" style="display: none;">
+              <label for="edit-period" data-i18n="period">Dönem</label>
+              <select id="edit-period">
+                <option value="daily" data-i18n="daily">Günlük</option>
+                <option value="weekly" data-i18n="weekly">Haftalık</option>
+              </select>
+            </div>
+            
+            <div class="form-group" id="edit-notes-group">
+              <label for="edit-notes" data-i18n="notes">Notlar</label>
+              <textarea id="edit-notes" rows="3" placeholder="Notlarınızı buraya yazın..."></textarea>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" id="edit-cancel" data-i18n="cancel">İptal</button>
+              <button type="submit" class="btn btn-primary" data-i18n="update">Güncelle</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -279,9 +369,10 @@ function createUI(): void {
               <option value="low" data-i18n="low">Düşük</option>
             </select>
             <input type="number" id="task-pomodoros" min="1" max="20" value="1" class="modern-input-number" placeholder="Pomodoro">
-            <label class="checkbox-label" data-i18n-title="recurringTask" title="Tekrarlayan görev">
+            <label class="checkbox-label recurring-checkbox" data-i18n-title="recurringTask" title="Tekrarlayan görev">
               <input type="checkbox" id="task-recurring" class="modern-checkbox">
-              <span>🔄</span>
+              <span class="checkmark"></span>
+              <span class="checkbox-text" data-i18n="recurringTask">Tekrarlayan Görev</span>
             </label>
           </div>
         </div>
@@ -364,6 +455,10 @@ function createUI(): void {
           </div>
           <div class="task-input-options">
             <input type="number" id="goal-target" placeholder="Hedef sayısı" min="1" max="50" class="modern-input-number" data-i18n-placeholder="targetNumber">
+            <select id="goal-period" class="modern-input">
+              <option value="daily" data-i18n="daily">Günlük</option>
+              <option value="weekly" data-i18n="weekly">Haftalık</option>
+            </select>
           </div>
         </div>
         <div class="task-tabs">
@@ -554,12 +649,194 @@ function setupEventListeners(): void {
     document.querySelector('.infoBox')?.classList.add('active');
   });
 
-  const closeInfoModal = () => {
-    document.querySelector('.shadowBg')?.classList.remove('active');
-    document.querySelector('.infoBox')?.classList.remove('active');
-  };
-
   document.querySelector('.fa-xmark')?.addEventListener('click', closeInfoModal);
+
+  // Edit modal functions
+  let currentEditItem: any = null;
+  let currentEditType: 'task' | 'goal' = 'task';
+
+  function openEditModal(type: 'task' | 'goal', item: any): void {
+    currentEditType = type;
+    currentEditItem = item;
+    
+    const modal = document.getElementById('edit-modal');
+    const title = document.getElementById('edit-modal-title');
+    const form = document.getElementById('edit-form') as HTMLFormElement;
+    
+    if (!modal || !title || !form) return;
+
+    // Set title
+    title.textContent = type === 'task' ? I18n.t('editTask') : I18n.t('editGoal');
+    
+    // Show/hide relevant fields
+    const pomodorosGroup = document.getElementById('edit-pomodoros-group');
+    const categoryGroup = document.getElementById('edit-category-group');
+    const recurringGroup = document.getElementById('edit-recurring-group');
+    const goalGroup = document.getElementById('edit-goal-group');
+    const targetGroup = document.getElementById('edit-target-group');
+    const periodGroup = document.getElementById('edit-period-group');
+    const notesGroup = document.getElementById('edit-notes-group');
+    
+    if (type === 'task') {
+      pomodorosGroup?.style.setProperty('display', 'block');
+      categoryGroup?.style.setProperty('display', 'block');
+      recurringGroup?.style.setProperty('display', 'block');
+      goalGroup?.style.setProperty('display', 'block');
+      targetGroup?.style.setProperty('display', 'none');
+      periodGroup?.style.setProperty('display', 'none');
+      notesGroup?.style.setProperty('display', 'block');
+      
+      // Populate task fields
+      (document.getElementById('edit-title') as HTMLInputElement).value = item.title;
+      (document.getElementById('edit-pomodoros') as HTMLInputElement).value = item.estimatedPomodoros.toString();
+      (document.getElementById('edit-category') as HTMLSelectElement).value = item.category || 'work';
+      (document.getElementById('edit-recurring') as HTMLInputElement).checked = item.recurring?.enabled || false;
+      (document.getElementById('edit-notes') as HTMLTextAreaElement).value = item.notes || '';
+      
+      // Populate goals dropdown
+      populateGoalsDropdown(item.goalId);
+    } else {
+      pomodorosGroup?.style.setProperty('display', 'none');
+      categoryGroup?.style.setProperty('display', 'none');
+      recurringGroup?.style.setProperty('display', 'none');
+      goalGroup?.style.setProperty('display', 'none');
+      targetGroup?.style.setProperty('display', 'block');
+      periodGroup?.style.setProperty('display', 'block');
+      notesGroup?.style.setProperty('display', 'none');
+      
+      // Populate goal fields
+      (document.getElementById('edit-title') as HTMLInputElement).value = item.title;
+      (document.getElementById('edit-target') as HTMLInputElement).value = item.target.toString();
+      (document.getElementById('edit-period') as HTMLSelectElement).value = item.period;
+    }
+    
+    // Show modal
+    modal.classList.add('active');
+  }
+
+  function closeEditModal(): void {
+    const modal = document.getElementById('edit-modal');
+    if (modal) {
+      modal.classList.remove('active');
+    }
+    currentEditItem = null;
+  }
+
+  function populateGoalsDropdown(selectedGoalId?: string): void {
+    const select = document.getElementById('edit-goal') as HTMLSelectElement;
+    if (!select) return;
+    
+    select.innerHTML = '<option value="" data-i18n="noGoal">Hedef yok</option>';
+    
+    const goals = GoalManager.getGoals();
+    goals.forEach((goal: any) => {
+      const option = document.createElement('option');
+      option.value = goal.id;
+      option.textContent = goal.title;
+      if (goal.id === selectedGoalId) {
+        option.selected = true;
+      }
+      select.appendChild(option);
+    });
+  }
+
+  function handleEditSubmit(e: Event): void {
+    e.preventDefault();
+    
+    if (!currentEditItem) return;
+    
+    const title = (document.getElementById('edit-title') as HTMLInputElement).value.trim();
+    if (!title) {
+      Toast.error('Title is required');
+      return;
+    }
+    
+    let success = false;
+    
+    if (currentEditType === 'task') {
+      const pomodoros = parseInt((document.getElementById('edit-pomodoros') as HTMLInputElement).value);
+      const notes = (document.getElementById('edit-notes') as HTMLTextAreaElement).value.trim();
+      const goalId = (document.getElementById('edit-goal') as HTMLSelectElement).value || undefined;
+      const category = (document.getElementById('edit-category') as HTMLSelectElement).value;
+      const recurring = (document.getElementById('edit-recurring') as HTMLInputElement).checked;
+      
+      if (isNaN(pomodoros) || pomodoros < 1 || pomodoros > 20) {
+        Toast.error(I18n.t('pomodoroCountError'));
+        return;
+      }
+      
+      // Check for duplicate task name (excluding current task)
+      const existingTasks = TaskManager.getTasks();
+      const duplicateTask = existingTasks.find(task => 
+        task.title.toLowerCase() === title.toLowerCase() && task.id !== currentEditItem.id
+      );
+      
+      if (duplicateTask) {
+        Toast.error(I18n.t('duplicateTaskName'));
+        return;
+      }
+      
+      success = TaskManager.editTask(currentEditItem.id, title, pomodoros, notes, goalId, category, recurring);
+      
+      if (success) {
+        updateTasksPanel();
+        updateUI();
+        Toast.success(I18n.t('taskUpdatedSuccess'));
+      } else {
+        Toast.error(I18n.t('updateFailed'));
+      }
+    } else {
+      const targetInput = document.getElementById('edit-target') as HTMLInputElement;
+      const periodSelect = document.getElementById('edit-period') as HTMLSelectElement;
+      const target = parseInt(targetInput.value);
+      const period = periodSelect.value as 'daily' | 'weekly';
+      
+      if (!targetInput.value || isNaN(target) || target < 1 || target > 50) {
+        Toast.error(I18n.t('goalTargetError'));
+        targetInput.focus();
+        return;
+      }
+      
+      // Check for duplicate goal name (excluding current goal)
+      const existingGoals = GoalManager.getGoals();
+      const duplicateGoal = existingGoals.find(goal => 
+        goal.title.toLowerCase() === title.toLowerCase() && goal.id !== currentEditItem.id
+      );
+      
+      if (duplicateGoal) {
+        Toast.error(I18n.t('duplicateGoalName'));
+        return;
+      }
+      
+      success = GoalManager.editGoal(currentEditItem.id, title, target, period);
+      if (success) {
+        updateGoalsPanel();
+        updateUI();
+        Toast.success(I18n.t('goalUpdatedSuccess'));
+      } else {
+        Toast.error(I18n.t('updateFailed'));
+      }
+    }
+    
+    if (success) {
+      closeEditModal();
+    }
+  }
+
+  // Edit modal event listeners
+  document.querySelector('.close-edit-modal')?.addEventListener('click', closeEditModal);
+  document.getElementById('edit-cancel')?.addEventListener('click', closeEditModal);
+  document.getElementById('edit-form')?.addEventListener('submit', handleEditSubmit);
+  
+  // Click outside modal to close
+  document.getElementById('edit-modal')?.addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      closeEditModal();
+    }
+  });
+
+  // Expose functions to window
+  (window as any).openEditModal = openEditModal;
 
   // Keyboard shortcuts
   document.addEventListener('keydown', (e) => {
@@ -568,13 +845,12 @@ function setupEventListeners(): void {
       return;
     }
 
-    switch (e.key) {
+    switch (e.key.toLowerCase()) {
       case ' ':
         e.preventDefault();
         toggleTimer();
         break;
       case 'r':
-      case 'R':
         e.preventDefault();
         resetTimer();
         break;
@@ -590,10 +866,33 @@ function setupEventListeners(): void {
         e.preventDefault();
         setMode('longBreak');
         break;
-      case 'Escape':
+      case 't':
+        e.preventDefault();
+        togglePanel('tasks');
+        break;
+      case 'g':
+        e.preventDefault();
+        togglePanel('goals');
+        break;
+      case 's':
+        e.preventDefault();
+        togglePanel('stats');
+        break;
+      case 'a':
+        e.preventDefault();
+        togglePanel('settings');
+        break;
+      case 'h':
+        e.preventDefault();
+        togglePanel('help');
+        break;
+      case 'escape':
         const infoBox = document.querySelector('.infoBox');
+        const editModal = document.getElementById('edit-modal');
         if (infoBox?.classList.contains('active')) {
           closeInfoModal();
+        } else if (editModal?.classList.contains('active')) {
+          closeEditModal();
         }
         break;
     }
@@ -871,7 +1170,24 @@ function updateTimerInfo(mode: string): void {
 // Panel management
 let currentOpenPanel: string | null = null;
 
+function closeInfoModal(): void {
+  document.querySelector('.shadowBg')?.classList.remove('active');
+  document.querySelector('.infoBox')?.classList.remove('active');
+}
+
 function togglePanel(panelName: string): void {
+  // Special handling for help panel
+  if (panelName === 'help') {
+    const infoBox = document.querySelector('.infoBox');
+    if (infoBox?.classList.contains('active')) {
+      closeInfoModal();
+    } else {
+      document.querySelector('.shadowBg')?.classList.add('active');
+      document.querySelector('.infoBox')?.classList.add('active');
+    }
+    return;
+  }
+  
   const panel = document.getElementById(`${panelName}-panel`);
   if (!panel) return;
 
@@ -1209,7 +1525,13 @@ function updateGoalsPanel(): void {
       return `
         <div class="goal-item ${isActive ? 'active-goal' : ''}" data-goal-id="${goal.id}" onclick="setActiveGoal('${goal.id}', event)">
           <div class="goal-header">
-            <h4>${goal.title}</h4>
+            <div class="goal-title-section">
+              <h4>${goal.title}</h4>
+              <div class="goal-period-badge">
+                <i class="fa-solid fa-${goal.period === 'daily' ? 'sun' : 'calendar-week'}"></i>
+                <span>${goal.period === 'daily' ? I18n.t('daily') : I18n.t('weekly')}</span>
+              </div>
+            </div>
             <div class="goal-actions">
               <button class="goal-btn edit" onclick="event.stopPropagation(); editGoal('${goal.id}')" title="${I18n.t('edit')}">
                 <i class="fa-solid fa-edit"></i>
@@ -1219,11 +1541,13 @@ function updateGoalsPanel(): void {
               </button>
             </div>
           </div>
-          <div class="goal-progress-bar">
-            <div class="goal-progress-fill" style="width: ${progress}%"></div>
-          </div>
-          <div class="goal-stats">
-            <span>${goal.current}/${goal.target} ${I18n.t('pomodoros')}</span>
+          <div class="goal-progress-section">
+            <div class="goal-progress-bar">
+              <div class="goal-progress-fill" style="width: ${progress}%"></div>
+            </div>
+            <div class="goal-stats">
+              <span>${goal.current}/${goal.target} ${I18n.t('pomodoros')}</span>
+            </div>
           </div>
           ${isActive ? '<div class="active-goal-badge"><i class="fa-solid fa-check-circle"></i> ' + I18n.t('activeGoal') + '</div>' : ''}
         </div>
@@ -1242,7 +1566,13 @@ function updateGoalsPanel(): void {
       return `
         <div class="goal-item completed" data-goal-id="${goal.id}">
           <div class="goal-header">
-            <h4><s>${goal.title}</s></h4>
+            <div class="goal-title-section">
+              <h4><s>${goal.title}</s></h4>
+              <div class="goal-period-badge">
+                <i class="fa-solid fa-${goal.period === 'daily' ? 'sun' : 'calendar-week'}"></i>
+                <span>${goal.period === 'daily' ? I18n.t('daily') : I18n.t('weekly')}</span>
+              </div>
+            </div>
             <div class="goal-actions">
               <button class="goal-btn edit" onclick="event.stopPropagation(); editGoal('${goal.id}')" title="${I18n.t('edit')}">
                 <i class="fa-solid fa-edit"></i>
@@ -1652,9 +1982,11 @@ function addTask(): void {
 function addGoal(): void {
   const titleInput = document.getElementById('goal-input') as HTMLInputElement;
   const targetInput = document.getElementById('goal-target') as HTMLInputElement;
+  const periodSelect = document.getElementById('goal-period') as HTMLSelectElement;
 
   const title = titleInput.value.trim();
   const target = parseInt(targetInput.value);
+  const period = periodSelect.value as 'daily' | 'weekly';
 
   if (!title) {
     Toast.warning(I18n.t('goalTitleRequired'));
@@ -1668,7 +2000,7 @@ function addGoal(): void {
     return;
   }
 
-  GoalManager.createGoal(title, target, 'daily');
+  GoalManager.createGoal(title, target, period);
   titleInput.value = '';
   targetInput.value = '5';
   updateGoalsPanel();
@@ -1727,53 +2059,14 @@ function addGoal(): void {
   const task = TaskManager.getTask(taskId);
   if (!task) return;
 
-  const title = prompt(I18n.t('taskTitle'), task.title);
-  if (!title || title.trim() === '') return;
-
-  const pomodorosStr = prompt(I18n.t('estimatedPomodoros'), task.estimatedPomodoros.toString());
-  if (!pomodorosStr) return;
-  
-  const pomodoros = parseInt(pomodorosStr);
-  if (isNaN(pomodoros) || pomodoros < 1 || pomodoros > 20) {
-    Toast.error(I18n.t('pomodoroCountError'));
-    return;
-  }
-
-  const notes = prompt(I18n.t('notes') + ' (Optional)', task.notes || '');
-  if (notes === null) return;
-
-  const success = TaskManager.editTask(taskId, title, pomodoros, notes, task.goalId || undefined);
-  if (success) {
-    updateTasksPanel();
-    updateUI();
-    Toast.success('Task updated successfully!');
-  }
+  (window as any).openEditModal('task', task);
 };
 
 (window as any).editGoal = function(goalId: string): void {
   const goal = GoalManager.getGoal(goalId);
   if (!goal) return;
 
-  const title = prompt(I18n.t('goalTitle'), goal.title);
-  if (!title || title.trim() === '') return;
-
-  const targetStr = prompt(I18n.t('targetPomodoros'), goal.target.toString());
-  if (!targetStr) return;
-  
-  const target = parseInt(targetStr);
-  if (isNaN(target) || target < 1 || target > 50) {
-    Toast.error(I18n.t('goalTargetError'));
-    return;
-  }
-
-  const period = confirm('Is this a daily goal? (OK for daily, Cancel for weekly)') ? 'daily' : 'weekly';
-
-  const success = GoalManager.editGoal(goalId, title, target, period);
-  if (success) {
-    updateGoalsPanel();
-    updateUI();
-    Toast.success('Goal updated successfully!');
-  }
+  (window as any).openEditModal('goal', goal);
 };
 
 // Goal management functions (exposed to window for onclick handlers)

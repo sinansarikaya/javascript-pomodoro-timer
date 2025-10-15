@@ -58,7 +58,7 @@ export interface Translations {
   other: string;
   all: string;
   searchTasks: string;
-  noGoal: string;
+  noGoalFilter: string;
   notes: string;
   hasNotes: string;
   addNote: string;
@@ -162,9 +162,21 @@ export interface Translations {
   editTask: string;
   editGoal: string;
   save: string;
+  update: string;
   taskTitle: string;
   goalTitle: string;
   targetPomodoros: string;
+  title: string;
+  goal: string;
+  noGoal: string;
+  period: string;
+  daily: string;
+  weekly: string;
+  duplicateTaskName: string;
+  duplicateGoalName: string;
+  taskUpdatedSuccess: string;
+  goalUpdatedSuccess: string;
+  updateFailed: string;
 }
 
 export const translations: Record<string, Translations> = {
@@ -179,11 +191,11 @@ export const translations: Record<string, Translations> = {
     reset: 'Sıfırla',
     
     // Navigation
-    statistics: 'İstatistikler',
-    tasks: 'Görevler',
-    goals: 'Hedefler',
-    settings: 'Ayarlar',
-    help: 'Yardım',
+    statistics: 'İstatistikler (S)',
+    tasks: 'Görevler (T)',
+    goals: 'Hedefler (G)',
+    settings: 'Ayarlar (A)',
+    help: 'Yardım (H)',
     
     // Timer
     youAreInPomodoroTime: 'Pomodoro zamanındasınız',
@@ -227,7 +239,7 @@ export const translations: Record<string, Translations> = {
     other: 'Diğer',
     all: 'Tümü',
     searchTasks: 'Görevlerde ara...',
-    noGoal: 'Hedef Yok',
+    noGoalFilter: 'Hedef Yok',
     notes: 'Notlar',
     hasNotes: 'Not var',
     addNote: 'Not ekle',
@@ -331,9 +343,21 @@ export const translations: Record<string, Translations> = {
     editTask: 'Görev Düzenle',
     editGoal: 'Hedef Düzenle',
     save: 'Kaydet',
+    update: 'Güncelle',
     taskTitle: 'Görev Başlığı',
     goalTitle: 'Hedef Başlığı',
-    targetPomodoros: 'Hedef Pomodoro Sayısı'
+    targetPomodoros: 'Hedef Pomodoro Sayısı',
+    title: 'Başlık',
+    goal: 'Hedef',
+    noGoal: 'Hedef yok',
+    period: 'Dönem',
+    daily: 'Günlük',
+    weekly: 'Haftalık',
+    duplicateTaskName: 'Bu isimde bir görev zaten mevcut!',
+    duplicateGoalName: 'Bu isimde bir hedef zaten mevcut!',
+    taskUpdatedSuccess: 'Görev başarıyla güncellendi!',
+    goalUpdatedSuccess: 'Hedef başarıyla güncellendi!',
+    updateFailed: 'Güncelleme başarısız oldu!'
   },
   en: {
     // Common
@@ -346,11 +370,11 @@ export const translations: Record<string, Translations> = {
     reset: 'Reset',
     
     // Navigation
-    statistics: 'Statistics',
-    tasks: 'Tasks',
-    goals: 'Goals',
-    settings: 'Settings',
-    help: 'Help',
+    statistics: 'Statistics (S)',
+    tasks: 'Tasks (T)',
+    goals: 'Goals (G)',
+    settings: 'Settings (A)',
+    help: 'Help (H)',
     
     // Timer
     youAreInPomodoroTime: 'You are in pomodoro time',
@@ -394,7 +418,7 @@ export const translations: Record<string, Translations> = {
     other: 'Other',
     all: 'All',
     searchTasks: 'Search tasks...',
-    noGoal: 'No Goal',
+    noGoalFilter: 'No Goal',
     notes: 'Notes',
     hasNotes: 'Has notes',
     addNote: 'Add note',
@@ -498,9 +522,21 @@ export const translations: Record<string, Translations> = {
     editTask: 'Edit Task',
     editGoal: 'Edit Goal',
     save: 'Save',
+    update: 'Update',
     taskTitle: 'Task Title',
     goalTitle: 'Goal Title',
-    targetPomodoros: 'Target Pomodoros'
+    targetPomodoros: 'Target Pomodoros',
+    title: 'Title',
+    goal: 'Goal',
+    noGoal: 'No goal',
+    period: 'Period',
+    daily: 'Daily',
+    weekly: 'Weekly',
+    duplicateTaskName: 'A task with this name already exists!',
+    duplicateGoalName: 'A goal with this name already exists!',
+    taskUpdatedSuccess: 'Task updated successfully!',
+    goalUpdatedSuccess: 'Goal updated successfully!',
+    updateFailed: 'Update failed!'
   }
 };
 
