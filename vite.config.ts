@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/',
+  base: '/javascript-pomodoro-timer/',
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
@@ -18,8 +18,8 @@ export default defineConfig({
         background_color: '#2c394b',
         display: 'standalone',
         orientation: 'portrait-primary',
-        scope: '/',
-        start_url: '/',
+        scope: '/javascript-pomodoro-timer/',
+        start_url: '/javascript-pomodoro-timer/',
         icons: [
           {
             src: 'pwa-64x64.png',
