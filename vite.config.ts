@@ -4,12 +4,14 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   base: '/',
   server: {
-    host: true
+    host: '0.0.0.0',
+    allowedHosts: ['.sinansarikaya.com', '.sinansarikaya.dev', '.sinansarikaya.me']
   },
   preview: {
-    host: true,
+    host: '0.0.0.0',
     port: 4173,
-    strictPort: true
+    strictPort: true,
+    allowedHosts: ['.sinansarikaya.com', '.sinansarikaya.dev', '.sinansarikaya.me']
   },
   plugins: [
     VitePWA({
